@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Resume - Windows 95</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('bliss.png') center/cover no-repeat fixed;
+            background-color: #5a9fd4;
+            overflow: hidden;
+            height: 100vh;
+            cursor: default;
+        }
+
+        /* Desktop */
+        .desktop {
+            height: calc(100vh - 40px);
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 90px);
+            grid-auto-rows: 90px;
+            gap: 15px;
+            align-content: start;
+        }
+
+        /* Folder Icons */
+        .folder {
+            width: 85px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background 0.1s;
+        }
+
+        .folder:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .folder:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .folder-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 8px;
+            background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);
+            position: relative;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .folder-icon::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 24px;
+            height: 8px;
+            background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .folder-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 0 rgba(255, 255, 255, 0.3), 0 12px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .folder-label {
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+
+        /* Windows */
+        .window {
+            position: absolute;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            min-width: 450px;
+            max-width: 750px;
+            display: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .window.active {
+            display: block;
+            z-index: 100;
+        }
+
+        .title-bar {
+            background: linear-gradient(180deg, #3a7bc8 0%, #2462b0 100%);
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .title-bar-text {
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-bar-text::before {
+            content: '📁';
+            font-size: 16px;
+        }
+
+        .title-bar-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .title-bar-button {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%);
+            border: 1px solid #8b8b8b;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333;
+            transition: background 0.1s;
+        }
+
+        .title-bar-button:hover {
+            background: linear-gradient(180deg, #fff 0%, #e5e5e5 100%);
+        }
+
+        .title-bar-button:active {
+            background: linear-gradient(180deg, #d4d4d4 0%, #f0f0f0 100%);
+        }
+
+        .window-body {
+            padding: 20px;
+            background: white;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Document Icons */
+        .documents {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 10px;
+        }
+
+        .document {
+            width: 85px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.1s;
+        }
+
+        .document:hover {
+            background: #e6f2ff;
+        }
+
+        .document:active {
+            background: #cce5ff;
+        }
+
+        .document-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 8px;
+            background: white;
+            border: 1px solid #c0c0c0;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 2px;
+        }
+
+        .document-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 14px 14px 0;
+            border-color: transparent #e0e0e0 transparent transparent;
+        }
+
+        .document-icon::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            height: 2px;
+            background: #3a7bc8;
+            box-shadow: 0 4px 0 #3a7bc8, 0 8px 0 #3a7bc8, 0 12px 0 #3a7bc8;
+        }
+
+        .document-label {
+            font-size: 11px;
+            color: #333;
+            word-wrap: break-word;
+            line-height: 1.3;
+        }
+
+        /* Detail View */
+        .detail-content {
+            line-height: 1.7;
+        }
+
+        .detail-content h3 {
+            color: #2462b0;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .detail-content p {
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .detail-content ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .detail-content strong {
+            color: #2462b0;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: linear-gradient(180deg, #f0f0f0 0%, #d4d4d4 100%);
+            border: 1px solid #8b8b8b;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            transition: background 0.1s;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(180deg, #fff 0%, #e5e5e5 100%);
+        }
+
+        .back-button:active {
+            background: linear-gradient(180deg, #d4d4d4 0%, #f0f0f0 100%);
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(180deg, #3a7bc8 0%, #2462b0 100%);
+            border-top: 1px solid #5c9fd6;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            z-index: 1000;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+        }
+
+        .start-button {
+            height: 32px;
+            padding: 0 12px;
+            background: linear-gradient(180deg, #5cb85c 0%, #449d44 100%);
+            border: 1px solid #3d8b3d;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background 0.1s;
+        }
+
+        .start-button:hover {
+            background: linear-gradient(180deg, #6fc96f 0%, #4cae4c 100%);
+        }
+
+        .start-button:active {
+            background: linear-gradient(180deg, #449d44 0%, #5cb85c 100%);
+        }
+
+        .start-button::before {
+            content: '⊞';
+            font-size: 18px;
+        }
+
+        .time {
+            margin-left: auto;
+            font-size: 12px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            color: white;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <!-- Aramco Folder -->
+        <div class="folder" onclick="openFolder('aramco')">
+            <div class="folder-icon"></div>
+            <div class="folder-label">Aramco</div>
+        </div>
+
+        <!-- Deloitte Folder -->
+        <div class="folder" onclick="openFolder('deloitte')">
+            <div class="folder-icon"></div>
+            <div class="folder-label">Deloitte</div>
+        </div>
+
+        <!-- UC Irvine Folder -->
+        <div class="folder" onclick="openFolder('uci')">
+            <div class="folder-icon"></div>
+            <div class="folder-label">UC Irvine</div>
+        </div>
+
+        <!-- Education Folder -->
+        <div class="folder" onclick="openFolder('education')">
+            <div class="folder-icon"></div>
+            <div class="folder-label">Education</div>
+        </div>
+    </div>
+
+    <!-- Aramco Window -->
+    <div class="window" id="aramco-window" style="top: 100px; left: 150px;">
+        <div class="title-bar">
+            <div class="title-bar-text">Aramco</div>
+            <div class="title-bar-controls">
+                <div class="title-bar-button" onclick="closeWindow('aramco-window')">×</div>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="documents">
+                <div class="document" onclick="openDetail('aramco-digital')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">Digital Solutions Analyst</div>
+                </div>
+                <div class="document" onclick="openDetail('aramco-strategy')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">Strategy & Market Analyst</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deloitte Window -->
+    <div class="window" id="deloitte-window" style="top: 120px; left: 200px;">
+        <div class="title-bar">
+            <div class="title-bar-text">Deloitte</div>
+            <div class="title-bar-controls">
+                <div class="title-bar-button" onclick="closeWindow('deloitte-window')">×</div>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="documents">
+                <div class="document" onclick="openDetail('deloitte-intern')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">Client-Facing Intern</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UC Irvine Window -->
+    <div class="window" id="uci-window" style="top: 140px; left: 250px;">
+        <div class="title-bar">
+            <div class="title-bar-text">UC Irvine</div>
+            <div class="title-bar-controls">
+                <div class="title-bar-button" onclick="closeWindow('uci-window')">×</div>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="documents">
+                <div class="document" onclick="openDetail('uci-learning')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">Learning Assistant</div>
+                </div>
+                <div class="document" onclick="openDetail('uci-facilitator')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">English Speaking Facilitator</div>
+                </div>
+                <div class="document" onclick="openDetail('uci-treasurer')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">SSA Treasurer</div>
+                </div>
+                <div class="document" onclick="openDetail('uci-board')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">Board Member</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education Window -->
+    <div class="window" id="education-window" style="top: 160px; left: 300px;">
+        <div class="title-bar">
+            <div class="title-bar-text">Education</div>
+            <div class="title-bar-controls">
+                <div class="title-bar-button" onclick="closeWindow('education-window')">×</div>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="documents">
+                <div class="document" onclick="openDetail('edu-uci')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">UC Irvine Degree</div>
+                </div>
+                <div class="document" onclick="openDetail('edu-aramco')">
+                    <div class="document-icon"></div>
+                    <div class="document-label">Aramco CPP</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Window -->
+    <div class="window" id="detail-window" style="top: 80px; left: 400px;">
+        <div class="title-bar">
+            <div class="title-bar-text" id="detail-title">Details</div>
+            <div class="title-bar-controls">
+                <div class="title-bar-button" onclick="closeWindow('detail-window')">×</div>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="detail-content" id="detail-content"></div>
+            <button class="back-button" onclick="closeWindow('detail-window')">Back</button>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button">Start</div>
+        <div class="time" id="time">12:00 PM</div>
+    </div>
+
+    <script>
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            document.getElementById('time').textContent = timeStr;
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+
+        // Window management
+        function openFolder(folder) {
+            closeAllWindows();
+            document.getElementById(folder + '-window').classList.add('active');
+        }
+
+        function closeWindow(windowId) {
+            document.getElementById(windowId).classList.remove('active');
+        }
+
+        function closeAllWindows() {
+            document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+        }
+
+        // Detail content
+        const details = {
+            'aramco-digital': {
+                title: 'Associate Digital Solutions Analyst',
+                content: `
+                    <h3>Associate Digital Solutions Analyst</h3>
+                    <p><strong>Aramco - Digital Factory | Upstream Digital Center</strong></p>
+                    <p><strong>Jan 2026 - Present (2 months)</strong></p>
+                    <p>On-site</p>
+                    <p><em>[Add your key responsibilities and achievements here]</em></p>
+                    <ul>
+                        <li>Working on digital transformation initiatives</li>
+                        <li>Analyzing and implementing digital solutions</li>
+                        <li>Collaborating with cross-functional teams</li>
+                    </ul>
+                `
+            },
+            'aramco-strategy': {
+                title: 'Associate Strategy & Market Analyst',
+                content: `
+                    <h3>Associate Strategy & Market Analyst</h3>
+                    <p><strong>Aramco - Data Analytics & Digital Insights | Global Analysis Department</strong></p>
+                    <p><strong>Jun 2025 - Dec 2025 (7 months)</strong></p>
+                    <p><em>[Add your key responsibilities and achievements here]</em></p>
+                    <ul>
+                        <li>Conducted market analysis and research</li>
+                        <li>Developed strategic insights from data</li>
+                        <li>Supported decision-making with analytics</li>
+                    </ul>
+                `
+            },
+            'deloitte-intern': {
+                title: 'Client-Facing Intern',
+                content: `
+                    <h3>Client-Facing Intern</h3>
+                    <p><strong>Deloitte - Cyber Risk Advisory</strong></p>
+                    <p><strong>Jun 2024 - Aug 2024 (3 months)</strong></p>
+                    <p><strong>Riyadh, Saudi Arabia</strong></p>
+                    <ul>
+                        <li>Collaborated with clients to understand business needs and provide data-driven insights to support decision-making processes</li>
+                        <li>Assisted in developing and presenting proposals, reports, and dashboards to clients, ensuring clarity and actionable recommendations</li>
+                        <li>Worked on deliverables, ensuring they met client expectations and project timelines</li>
+                    </ul>
+                `
+            },
+            'uci-learning': {
+                title: 'Learning Assistant',
+                content: `
+                    <h3>Learning Assistant</h3>
+                    <p><strong>UC Irvine - Donald Bren School of Information and Computer Sciences</strong></p>
+                    <p><strong>Sep 2023 - Dec 2023 (4 months)</strong></p>
+                    <p><strong>Irvine, CA</strong></p>
+                    <p>Guided students in labs for the course Python Programming with Libraries (Accelerated), clarifying Python concepts and libraries, and aiding in coursework progression</p>
+                    <p><strong>Skills:</strong> Problem Solving and Python (Programming Language)</p>
+                `
+            },
+            'uci-facilitator': {
+                title: 'English Speaking Facilitator',
+                content: `
+                    <h3>English Speaking Facilitator</h3>
+                    <p><strong>UCI International Center</strong></p>
+                    <p><strong>Sep 2023 - Dec 2023 (4 months)</strong></p>
+                    <p>California, United States - On-site</p>
+                    <p>Actively participating in weekly sessions, assisting international students in practicing, and enhancing their oral English skills through conversations and activities.</p>
+                    <p><strong>Skills:</strong> Communication and Teaching English as a Second Language</p>
+                `
+            },
+            'uci-treasurer': {
+                title: 'Treasurer - Saudi Student Association',
+                content: `
+                    <h3>Treasurer</h3>
+                    <p><strong>The Saudi Student Association</strong></p>
+                    <p><strong>Jun 2024 - Present</strong></p>
+                    <p><strong>Irvine, CA</strong></p>
+                    <ul>
+                        <li>Managed the financial operations of the association, including budgeting, accounting, and reporting to ensure the organization's financial stability</li>
+                        <li>Coordinated with vendors, sponsors, and club members to ensure seamless execution of financial transactions and event planning</li>
+                    </ul>
+                `
+            },
+            'uci-board': {
+                title: 'Board Member and Club Officer',
+                content: `
+                    <h3>Board Member and Club Officer</h3>
+                    <p><strong>The Saudi Student Association</strong></p>
+                    <p><strong>Sep 2022 - Jun 2024 (1 year 10 months)</strong></p>
+                    <p><strong>Irvine, CA</strong></p>
+                    <ul>
+                        <li>Coordinated and executed various events, including Eid, International Day, and The Founding Day, with a focus on effective organization and seamless execution</li>
+                        <li>Established and maintained relationships with corporate sponsors through active communication and negotiation</li>
+                    </ul>
+                `
+            },
+            'edu-uci': {
+                title: 'UC Irvine Education',
+                content: `
+                    <h3>University of California, Irvine</h3>
+                    <p><strong>Bachelor of Science, Data Science</strong></p>
+                    <p><strong>Sep 2021 - Jun 2025</strong></p>
+                    <p><strong>Activities and societies:</strong> Saudi Students Association, MAISS</p>
+                `
+            },
+            'edu-aramco': {
+                title: 'Aramco College Preparatory Program',
+                content: `
+                    <h3>Aramco's College Preparatory Program (CPP)</h3>
+                    <p><strong>Computer Track</strong></p>
+                    <p><strong>Sep 2020 - Jun 2021</strong></p>
+                `
+            }
+        };
+
+        function openDetail(detailKey) {
+            const detail = details[detailKey];
+            if (detail) {
+                document.getElementById('detail-title').textContent = detail.title;
+                document.getElementById('detail-content').innerHTML = detail.content;
+                document.getElementById('detail-window').classList.add('active');
+            }
+        }
+
+        // Draggable windows
+        let activeWindow = null;
+        let offset = { x: 0, y: 0 };
+
+        document.querySelectorAll('.title-bar').forEach(titleBar => {
+            titleBar.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('title-bar-button')) return;
+                
+                activeWindow = this.parentElement;
+                const rect = activeWindow.getBoundingClientRect();
+                offset.x = e.clientX - rect.left;
+                offset.y = e.clientY - rect.top;
+                
+                activeWindow.style.zIndex = 1000;
+            });
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (activeWindow) {
+                activeWindow.style.left = (e.clientX - offset.x) + 'px';
+                activeWindow.style.top = (e.clientY - offset.y) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (activeWindow) {
+                activeWindow.style.zIndex = 100;
+                activeWindow = null;
+            }
+        });
+    </script>
+</body>
+</html>
