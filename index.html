@@ -342,6 +342,215 @@
             color: white;
             font-weight: 500;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                background: url('bliss.png') center/cover no-repeat fixed;
+                background-color: #5a9fd4;
+            }
+
+            .desktop {
+                height: calc(100vh - 40px);
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 120px;
+                gap: 15px;
+                padding: 15px;
+                align-content: start;
+                overflow-y: auto;
+            }
+
+            .folder {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                padding: 10px;
+                background: transparent;
+                border-radius: 8px;
+                transition: background 0.2s;
+            }
+
+            .folder:active {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            .folder-icon {
+                width: 56px;
+                height: 56px;
+                margin: 0;
+            }
+
+            .folder-icon::before {
+                height: 48px;
+            }
+
+            .folder-icon::after {
+                width: 32px;
+                height: 14px;
+            }
+
+            .folder-label {
+                color: white;
+                font-size: 14px;
+                font-weight: 600;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+                text-align: center;
+                background: rgba(0, 0, 0, 0.3);
+                padding: 4px 8px;
+                border-radius: 3px;
+            }
+
+            /* Mobile Window Styles */
+            .window {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 40px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 100% !important;
+                border-radius: 0;
+                z-index: 1000;
+            }
+
+            .window.active {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .title-bar {
+                border-radius: 0;
+                flex-shrink: 0;
+                padding: 10px 12px;
+            }
+
+            .title-bar-text {
+                font-size: 15px;
+            }
+
+            .title-bar-button {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+
+            .window-body {
+                flex: 1;
+                overflow-y: auto;
+                max-height: none;
+                padding: 18px;
+            }
+
+            .documents {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 0;
+            }
+
+            .document {
+                width: 100%;
+                padding: 15px 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                background: #f5f5f5;
+                border: 1px solid #d0d0d0;
+                border-radius: 6px;
+                transition: background 0.2s;
+            }
+
+            .document:active {
+                background: #e8e8e8;
+            }
+
+            .document-icon {
+                flex-shrink: 0;
+                width: 48px;
+                height: 48px;
+                margin: 0;
+            }
+
+            .document-label {
+                text-align: center;
+                font-size: 12px;
+                font-weight: 600;
+                color: #333;
+                line-height: 1.3;
+            }
+
+            .detail-content {
+                font-size: 14px;
+                line-height: 1.7;
+            }
+
+            .detail-content h3 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .detail-content p {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+
+            .detail-content ul {
+                font-size: 14px;
+                margin-left: 22px;
+                margin-bottom: 12px;
+            }
+
+            .detail-content li {
+                margin-bottom: 10px;
+            }
+
+            .back-button {
+                width: 100%;
+                padding: 12px;
+                font-size: 15px;
+                margin-top: 20px;
+            }
+
+            .taskbar {
+                height: 40px;
+            }
+
+            .start-button {
+                font-size: 13px;
+                height: 32px;
+                padding: 0 12px;
+            }
+
+            .start-button::before {
+                font-size: 16px;
+            }
+
+            .time {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        /* Tablet Styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .desktop {
+                grid-template-columns: repeat(auto-fill, 100px);
+                gap: 20px;
+            }
+
+            .window {
+                min-width: 500px;
+                max-width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -518,13 +727,12 @@
                 content: `
                     <h3>Associate Digital Solutions Analyst</h3>
                     <p><strong>Aramco - Digital Factory | Upstream Digital Center</strong></p>
-                    <p><strong>Jan 2026 - Present (2 months)</strong></p>
-                    <p>On-site</p>
-                    <p><em>[Add your key responsibilities and achievements here]</em></p>
+                    <p><strong>Jan 2026 - Present</strong></p>
+                    <p><strong>Dhahran, Saudi Arabia</strong></p>
                     <ul>
-                        <li>Working on digital transformation initiatives</li>
-                        <li>Analyzing and implementing digital solutions</li>
-                        <li>Collaborating with cross-functional teams</li>
+                        <li>Contributed to agile development initiatives by actively participating in sprints and scrum ceremonies, ensuring iterative progress on digital solutions aligned with business objectives</li>
+                        <li>Developed and implemented code for digital applications, focusing on enhancing system performance and user experience through clean, efficient programming practices</li>
+                        <li>Collaborated on AI integration projects, working cross-functionally to embed machine learning capabilities into existing platforms and drive digital transformation initiatives</li>
                     </ul>
                 `
             },
@@ -534,11 +742,11 @@
                     <h3>Associate Strategy & Market Analyst</h3>
                     <p><strong>Aramco - Data Analytics & Digital Insights | Global Analysis Department</strong></p>
                     <p><strong>Jun 2025 - Dec 2025 (7 months)</strong></p>
-                    <p><em>[Add your key responsibilities and achievements here]</em></p>
+                    <p><strong>Dhahran, Saudi Arabia</strong></p>
                     <ul>
-                        <li>Conducted market analysis and research</li>
-                        <li>Developed strategic insights from data</li>
-                        <li>Supported decision-making with analytics</li>
+                        <li>Conducted comprehensive deep-dive analyses on emerging digital topics to generate strategic insights for senior leadership, informing data-driven decision-making across the organization</li>
+                        <li>Contributed to the development of the Global Digital Outlook, synthesizing market trends, competitive intelligence, and industry forecasts to support strategic planning initiatives</li>
+                        <li>Supported high-priority digital project initiatives by providing analytical insights and strategic recommendations to advance enterprise-wide digital transformation efforts</li>
                     </ul>
                 `
             },
@@ -632,36 +840,39 @@
             }
         }
 
-        // Draggable windows
+        // Draggable windows (desktop only)
         let activeWindow = null;
         let offset = { x: 0, y: 0 };
+        const isMobile = window.innerWidth <= 768;
 
-        document.querySelectorAll('.title-bar').forEach(titleBar => {
-            titleBar.addEventListener('mousedown', function(e) {
-                if (e.target.classList.contains('title-bar-button')) return;
-                
-                activeWindow = this.parentElement;
-                const rect = activeWindow.getBoundingClientRect();
-                offset.x = e.clientX - rect.left;
-                offset.y = e.clientY - rect.top;
-                
-                activeWindow.style.zIndex = 1000;
+        if (!isMobile) {
+            document.querySelectorAll('.title-bar').forEach(titleBar => {
+                titleBar.addEventListener('mousedown', function(e) {
+                    if (e.target.classList.contains('title-bar-button')) return;
+                    
+                    activeWindow = this.parentElement;
+                    const rect = activeWindow.getBoundingClientRect();
+                    offset.x = e.clientX - rect.left;
+                    offset.y = e.clientY - rect.top;
+                    
+                    activeWindow.style.zIndex = 1000;
+                });
             });
-        });
 
-        document.addEventListener('mousemove', function(e) {
-            if (activeWindow) {
-                activeWindow.style.left = (e.clientX - offset.x) + 'px';
-                activeWindow.style.top = (e.clientY - offset.y) + 'px';
-            }
-        });
+            document.addEventListener('mousemove', function(e) {
+                if (activeWindow) {
+                    activeWindow.style.left = (e.clientX - offset.x) + 'px';
+                    activeWindow.style.top = (e.clientY - offset.y) + 'px';
+                }
+            });
 
-        document.addEventListener('mouseup', function() {
-            if (activeWindow) {
-                activeWindow.style.zIndex = 100;
-                activeWindow = null;
-            }
-        });
+            document.addEventListener('mouseup', function() {
+                if (activeWindow) {
+                    activeWindow.style.zIndex = 100;
+                    activeWindow = null;
+                }
+            });
+        }
     </script>
 </body>
 </html>
